@@ -1,0 +1,25 @@
+{
+    "compilerOptions": {
+        "esModuleInterop": true,
+        "target": "ES2020", // Use a more modern target
+        "module": "ESNext", // Modern module system for Node.js
+        "moduleResolution": "Node", // Standard Node.js module resolution
+        "allowJs": true,
+        "emitDecoratorMetadata": true,
+        "experimentalDecorators": true,
+        "resolveJsonModule": true,
+        "declaration": false,
+        "outDir": "./dist",
+        "rootDir": "./src",
+        "lib": [
+            "ES2020",
+            "DOM"
+        ]
+    },
+    "include": [
+        "src/**/*.ts"
+    ],
+    "exclude": [
+        "node_modules"
+    ]
+}
