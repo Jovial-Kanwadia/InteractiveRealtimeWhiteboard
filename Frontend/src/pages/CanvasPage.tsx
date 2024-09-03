@@ -4,6 +4,7 @@ import { FaLongArrowAltRight } from "react-icons/fa";
 import { LuPencil } from "react-icons/lu";
 import { GiArrowCursor } from "react-icons/gi";
 import { FaRegCircle } from "react-icons/fa6";
+import { HfInference } from "@huggingface/inference";
 import {
   Arrow,
   Circle,
@@ -243,6 +244,31 @@ function handleRedo() {
     document.body.removeChild(link);
   }
 
+  async function handleModel() {
+    const uri = stageRef.current.toDataURL(); // Capture the canvas as an image
+    
+    const response = await fetch(uri);
+    const blob = await response.blob();
+    const file = new File([blob], "canvas-image.png", { type: "image/png" });
+    console.log(file);
+    
+    // Initialize the inference session with access token
+    const inference = new HfInference(import.meta.env.VITE_HF_ACCESS_TOKEN);
+    
+    try {
+      // Perform the image-to-text inference using the model
+      const result: any = await inference.imageToText({
+        model: "microsoft/trocr-base-handwritten",
+        data: file
+      });
+      alert(result.generated_text)
+    } catch (error) { 
+      console.log(error);
+    }
+  }
+  
+  
+
   function onClick(e: any) {
     if (action !== ACTIONS.SELECT) return;
     const target = e.currentTarget;
@@ -327,6 +353,7 @@ function handleRedo() {
             <button onClick={handleExport}>
               <IoMdDownload size={"1.5rem"} />
             </button>
+            <button onClick={handleModel}> Convert To Text </button>
           </div>
         </div>
         {/* Canvas */}
